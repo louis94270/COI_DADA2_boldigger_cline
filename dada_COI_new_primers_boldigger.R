@@ -251,7 +251,7 @@ rownames(asv_tab) <- seq(from = 1, to = dim(asv_tab)[1], by = 1)
 #Create bolean vector of blanks
 vector_for_decontam <- c()
 
-for (i in 1:length(colnames(asv_tab[, 3:148]))) {
+for (i in 1:dim(asv_tab[, 3:148])[2]) {
   if (str_detect(colnames(asv_tab[, 3:148])[i], "BLNX", negate = FALSE) == "TRUE") {
     vector_for_decontam[i] <- str_detect(colnames(asv_tab[, 3:148])[i], "BLNX", negate = FALSE)
   } else {
