@@ -18,6 +18,7 @@ A DADA2 metabarcoding eDNA pipeline for COI marker using boldigger cline
 6. You can start running the code ! 
 7. Be carefull of looking at your quality profils before running line 102 to adapt your arguments
 8. Make sure you have a stable internet connection (and plenty of time) before running the boldigger cline code (line 185)
+9. Be carefull along the code some objects dimensions will need updating
 
 The different steps are very well explained in these tutorials : 
 -https://astrobiomike.github.io/amplicon/dada2_workflow_ex
