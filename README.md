@@ -21,6 +21,6 @@ A DADA2 metabarcoding eDNA pipeline for COI marker using boldigger cline
 9. Be carefull along the code some objects dimensions will need updating
 
 The different steps are very well explained in these tutorials : 
--https://astrobiomike.github.io/amplicon/dada2_workflow_ex
--https://benjjneb.github.io/dada2/tutorial.html
+1. https://astrobiomike.github.io/amplicon/dada2_workflow_ex
+2. https://benjjneb.github.io/dada2/tutorial.html
 
