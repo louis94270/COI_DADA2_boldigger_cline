@@ -251,15 +251,15 @@ rownames(asv_tab) <- seq(from = 1, to = dim(asv_tab)[1], by = 1)
 #Create bolean vector of blanks
 vector_for_decontam <- c()
 
-for (i in 1:dim(asv_tab[, 3:148])[2]) {
-  if (str_detect(colnames(asv_tab[, 3:148])[i], "BLNX", negate = FALSE) == "TRUE") {
-    vector_for_decontam[i] <- str_detect(colnames(asv_tab[, 3:148])[i], "BLNX", negate = FALSE)
+for (i in 1:dim(asv_tab[, 3:dim(asv_tab)[2]])[2]) {
+  if (str_detect(colnames(asv_tab[, 3:dim(asv_tab)[2]])[i], "BLNX", negate = FALSE) == "TRUE") {
+    vector_for_decontam[i] <- str_detect(colnames(asv_tab[, 3:dim(asv_tab)[2]])[i], "BLNX", negate = FALSE)
   } else {
-    vector_for_decontam[i] <- str_detect(colnames(asv_tab[, 3:148])[i], "_B_", negate = FALSE)
+    vector_for_decontam[i] <- str_detect(colnames(asv_tab[, 3:dim(asv_tab)[2]])[i], "_B_", negate = FALSE)
   }
 }
 
-contam_df <- isContaminant(t(asv_tab[, 3:148]), neg = vector_for_decontam)
+contam_df <- isContaminant(t(asv_tab[, 3:dim(asv_tab)[2]]), neg = vector_for_decontam)
 
 table(contam_df$contaminant)
 
