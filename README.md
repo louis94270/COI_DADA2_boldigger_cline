@@ -16,7 +16,7 @@ A DADA2 metabarcoding eDNA pipeline for COI marker using boldigger cline
 4. Change the different paths in the R code to match your computer set-up (line 12 and line 46)
 5. Change the primer for the one you are using in the R code (line 31 and line 33)
 6. You can start running the code ! 
-7. Be carefull of looking at your quality profils before running line 102 to adapt your arguments
+7. Be carefull of looking at your quality profils before running line 102 to adapt your arguments, you can use the amplicon sequence tool I developped to look at your sequences and calculate the overlap to make sure you are not cutting to many base pairs 
 8. Make sure you have a stable internet connection (and plenty of time) before running the boldigger cline code (line 185)
 9. Be carefull along the code some objects dimensions will need updating
 
