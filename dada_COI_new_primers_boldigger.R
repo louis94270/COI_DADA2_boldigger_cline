@@ -1,4 +1,4 @@
-##### COI DADA2 pipeline 
+##### COI DADA2 pipeline
 ##### https://github.com/fkeck/DADA2_diatoms_pipeline
 ##### https://astrobiomike.github.io/amplicon/dada2_workflow_ex
 ##### https://github.com/DominikBuchner/BOLDigger
@@ -50,14 +50,14 @@ for(i in seq_along(fas_Fs_raw)) {
                              "--discard-untrimmed",
                              "--max-n 0",
                              # Optional strong constraint on expected length
-                             #paste0("-m ", 250-nchar(FWD)[1], ":", 250-nchar(REV)[1]), 
-                             #paste0("-M ", 250-nchar(FWD)[1], ":", 250-nchar(REV)[1]), 
+                             #paste0("-m ", 250-nchar(FWD)[1], ":", 250-nchar(REV)[1]),
+                             #paste0("-M ", 250-nchar(FWD)[1], ":", 250-nchar(REV)[1]),
                              "-o", fas_Fs_cut[i], "-p", fas_Rs_cut[i],
                              fas_Fs_raw[i], fas_Rs_raw[i]))
 }
 
-out_1 <- cbind(ShortRead::qa(fas_Fs_raw)[["readCounts"]][,"read", drop = FALSE],
-               ShortRead::qa(fas_Fs_cut)[["readCounts"]][,"read", drop = FALSE])
+out_1 <- cbind(ShortRead::qa(fas_Fs_raw)[["readCounts"]][, "read", drop = FALSE],
+               ShortRead::qa(fas_Fs_cut)[["readCounts"]][, "read", drop = FALSE])
 
 head(out_1)
 
@@ -70,8 +70,8 @@ path_process <- path_cut # If you skipped primers removal, provide the path to y
 fas_Fs_process <- sort(list.files(path_process, pattern = file_pattern["F"], full.names = TRUE))
 fas_Rs_process <- sort(list.files(path_process, pattern = file_pattern["R"], full.names = TRUE))
 
-sample_names <- sapply(strsplit(basename(fas_Fs_process), "_"), function(x) {paste0(x[c(1:3,5)],collapse="_")} )
-sample_names <- stringr::str_replace(sample_names, 'Pool-0','PCR')
+sample_names <- sapply(strsplit(basename(fas_Fs_process), "_"), function(x) {paste0(x[c(1:3,5)], collapse = "_")})
+sample_names <- stringr::str_replace(sample_names, "Pool-0", "PCR")
 
 #### Inspect read quality profiles ####
 plotQualityProfile(fas_Fs_process[2])
@@ -100,7 +100,7 @@ names(fas_Rs_filtered) <- sample_names
 # Think twice before copying next command
 # Check DADA2 official tutorial and the help of filterAndTrim function for details about arguments
 out_2 <- filterAndTrim(fas_Fs_process, fas_Fs_filtered, fas_Rs_process, fas_Rs_filtered,
-                       truncLen = c(142,142), maxN = 0, maxEE = c(2, 2), truncQ = 2,
+                       truncLen = c(142, 142), maxN = 0, maxEE = c(2, 2), truncQ = 2,
                        rm.phix = TRUE, compress = TRUE, multithread = TRUE)
 head(out_2)
 
@@ -133,9 +133,9 @@ for(i in sample_names){
 
 #### CONSTRUCT SEQUENCE TABLE ####
 
-to.rm = as.numeric(lapply(merged_list, function(x) sum(x$abundance)))
-to.kp = !(to.rm == 0)
-merged_list_clean = merged_list[to.kp]
+to.rm <- as.numeric(lapply(merged_list, function(x) sum(x$abundance)))
+to.kp <- !(to.rm == 0)
+merged_list_clean <- merged_list[to.kp]
 
 seqtab <- makeSequenceTable(merged_list_clean)
 dim(seqtab)
@@ -149,78 +149,76 @@ table(nchar(getSequences(seqtab_nochim)))
 
 #### TRACK READS THROUGH THE PIPELINE ####
 
-reads.raw = data.frame('sample' = rownames(seqtab), 'Merged' = rowSums(seqtab))
-reads.nochim = data.frame('sample' = rownames(seqtab_nochim), 'Nonchim' = rowSums(seqtab_nochim))
+reads.raw <- data.frame("sample" = rownames(seqtab), "Merged" = rowSums(seqtab))
+reads.nochim <- data.frame("sample" = rownames(seqtab_nochim), "Nonchim" = rowSums(seqtab_nochim))
 
-track = data.frame('sample' = sample_names, 'Raw' = out_1[,1], 'Cutadapt' = out_1[,2], 'Filtered' = out_2[, 2])
-track = left_join(track, reads.raw) %>% left_join(reads.nochim, by = 'sample')
-track[is.na(track)] = 0
-track = track[!(track$Nonchim > track$Raw),]
+track <- data.frame("sample" = sample_names, "Raw" = out_1[, 1], "Cutadapt" = out_1[, 2], "Filtered" = out_2[, 2])
+track <- left_join(track, reads.raw) %>% left_join(reads.nochim, by = "sample")
+track[is.na(track)] <- 0
+track <- track[!(track$Nonchim > track$Raw), ]
 
 #### ASSIGN TAXONOMY ####
 
-#For this pipeline we will use boldigger 
-#create fa file 
+#For this pipeline we will use boldigger
+#create fa file
 
 # giving our seq headers more manageable names (ASV_1, ASV_2...)
 asv_seqs <- colnames(seqtab_nochim)
-asv_headers <- vector(dim(seqtab_nochim)[2], mode="character")
+asv_headers <- vector(dim(seqtab_nochim)[2], mode = "character")
 
 for (i in 1:dim(seqtab_nochim)[2]) {
-  asv_headers[i] <- paste(">ASV", i, sep="_")
+  asv_headers[i] <- paste(">ASV", i, sep = "_")
 }
 
 # making and writing out a fasta of our final ASV seqs:
 asv_fasta <- c(rbind(asv_headers, asv_seqs))
 write(asv_fasta, file.path(path_results, "ASVs.fa"))
 
-boldigger = c("boldigger-cline")
-marker = c("ie_coi") # ie_coi / ie_its / ie_rbcl
-username = c("louisastorg")
-password = c("Coulibali1!")
-fasta_path = file.path(path_results, "ASVs.fa")
-output_folder = path_results
+boldigger <- c("boldigger-cline")
+marker <- c("ie_coi")
+username <- c("louisastorg")
+password <- c("Coulibali1!")
+fasta_path <- file.path(path_results, "ASVs.fa")
+output_folder <- path_results
 
-x = paste(boldigger,marker,username,password,fasta_path,output_folder, sep = " ")
+x <- paste(boldigger, marker, username, password, fasta_path, output_folder, sep = " ")
 base::system(x)
 
-##Import csv result file 
-tax = readxl::read_xlsx(file.path(path_results,'BOLDResults_ASVs_part_1.xlsx'))
+##Import csv result file
+tax <- readxl::read_xlsx(file.path(path_results, "BOLDResults_ASVs_part_1.xlsx"))
 
-##Sub-sample best hit for each ASV 
-tax = as.data.frame(tax[seq(1, nrow(tax), 20), ]) #take every 20th row in df
-tax = tax[,-8]
-tax[,1] = gsub('>', '', tax$`You searched for`)
+##Sub-sample best hit for each ASV
+tax <- as.data.frame(tax[seq(1, nrow(tax), 20), ]) #take every 20th row in df
+tax <- tax[, -8]
+tax[, 1] <- gsub(">", "", tax$`You searched for`)
 
 dim(tax)
 dim(seqtab_nochim)
 
-#replace NA by No Match 
+#replace NA by No Match
 
-tax = tax %>% 
-  replace_na(list(Phylum = 'No Match', Class = 'No Match', Order = 'No Match',
-                  Family = 'No Match', Genus = 'No Match', Species = 'No Match',
-                  Subspecies = 'No Match'))
+tax <- tax %>%
+  replace_na(list(Phylum = "No Match", Class = "No Match", Order = "No Match",
+                  Family = "No Match", Genus = "No Match", Species = "No Match",
+                  Subspecies = "No Match"))
 
-write.csv(df.new, file.path(path_results,"COI_nested_taxonomy_boldigger.csv"))
+write.csv(df.new, file.path(path_results, "COI_nested_taxonomy_boldigger.csv"))
 
-#### CLEAN AND SAVE EVERYTHING #### 
+#### CLEAN AND SAVE EVERYTHING ####
 
 # I like to save in CSV :)
 # I also transpose community matrices and turn rownames into columns for better integration with dplyr.
 # Note that if you need to reload these files to process them later with DADA2 functions
 # (eg. merge several runs), it is better to save raw DADA2 objects in .rds (see official tutorial).
 
-prep_cdm <- function(x){
+prep_cdm <- function(x) {
   x <- t(x)
   x <- as.data.frame(x)
-  asv_num <- vector(dim(x)[1], mode="character")
-  
+  asv_num <- vector(dim(x)[1], mode = "character")
   for (i in 1:dim(x)[1]) {
-    asv_num[i] <- paste("ASV", i, sep="_")
+    asv_num[i] <- paste("ASV", i, sep = "_")
   }
-  
-  x <- cbind(rownames(x),asv_num, x)
+  x <- cbind(rownames(x), asv_num, x)
   colnames(x)[1] <- "DNA_SEQ"
   colnames(x)[2] <- "ASV"
   return(x)
@@ -248,25 +246,25 @@ library(decontam)
 
 # count table:
 asv_tab <- prep_cdm(seqtab_nochim)
-rownames(asv_tab) <- seq(from=1, to=dim(asv_tab)[1],by=1)
+rownames(asv_tab) <- seq(from = 1, to = dim(asv_tab)[1], by = 1)
 
-#Create bolean vector of blanks 
-vector_for_decontam = c()
+#Create bolean vector of blanks
+vector_for_decontam <- c()
 
-for (i in 1:length(colnames(asv_tab[,3:148]))) {
-  if (str_detect(colnames(asv_tab[,3:148])[i], "BLNX", negate = FALSE) == "TRUE") {
-    vector_for_decontam[i] = str_detect(colnames(asv_tab[,3:148])[i], "BLNX", negate = FALSE)
+for (i in 1:length(colnames(asv_tab[, 3:148]))) {
+  if (str_detect(colnames(asv_tab[, 3:148])[i], "BLNX", negate = FALSE) == "TRUE") {
+    vector_for_decontam[i] <- str_detect(colnames(asv_tab[, 3:148])[i], "BLNX", negate = FALSE)
   } else {
-    vector_for_decontam[i] = str_detect(colnames(asv_tab[,3:148])[i], "_B_", negate = FALSE)
+    vector_for_decontam[i] <- str_detect(colnames(asv_tab[, 3:148])[i], "_B_", negate = FALSE)
   }
 }
 
-contam_df <- isContaminant(t(asv_tab[,3:148]), neg=vector_for_decontam)
+contam_df <- isContaminant(t(asv_tab[, 3:148]), neg = vector_for_decontam)
 
-table(contam_df$contaminant) 
+table(contam_df$contaminant)
 
 # getting vector holding the identified contaminant IDs
-contam_asvs <- row.names(contam_df[contam_df$contaminant == TRUE, ]) 
+contam_asvs <- row.names(contam_df[contam_df$contaminant == TRUE, ])
 tax[contam_asvs, ]
 
 # making new fasta file
