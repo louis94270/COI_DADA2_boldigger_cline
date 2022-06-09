@@ -9,7 +9,7 @@ library(tidyverse)
 library(reticulate)
 
 # Your path to your sequences here
-path <- "/media/louis/753b57ea-88fe-4f13-8a49-4b244d3783d2/bioinfo_post_doc/Q007381_COI_Arthropod/all_seq"
+path <- "/path/to/demultiplexed/sequences"
 
 path_results <- file.path(path, "results_boldigger_cline")
 if(!dir.exists(path_results)) dir.create(path_results)
@@ -43,7 +43,7 @@ fas_Rs_cut <- file.path(path_cut, basename(fas_Rs_raw))
 R1_flags <- paste(paste("-g", FWD, collapse = " "), paste("-a", REV_RC, collapse = " "))
 R2_flags <- paste(paste("-G", REV, collapse = " "), paste("-A", FWD_RC, collapse = " "))
 
-cutadapt <- "/home/louis/anaconda3/envs/cutadapt/bin/cutadapt" # Path to the executable
+cutadapt <- "/path/to/cutadapt/executable" # Path to the executable
 for(i in seq_along(fas_Fs_raw)) {
   cat("Processing", "-----------", i, "/", length(fas_Fs_raw), "-----------\n")
   system2(cutadapt, args = c(R1_flags, R2_flags,
@@ -159,7 +159,7 @@ track = track[!(track$Nonchim > track$Raw),]
 
 #### ASSIGN TAXONOMY ####
 
-#For COI we use boldigger 
+#For this pipeline we will use boldigger 
 #create fa file 
 
 # giving our seq headers more manageable names (ASV_1, ASV_2...)
