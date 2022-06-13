@@ -18,7 +18,8 @@ A DADA2 metabarcoding eDNA pipeline for COI marker using boldigger cline all wor
 6. You can start running the code ! 
 7. Be carefull of looking at your quality profils before running line 102 to adapt your arguments, you can use the amplicon sequence tool I developped to look at your sequences and calculate the overlap to make sure you are not cutting to many base pairs 
 8. Make sure you have a stable internet connection (and plenty of time) before running the boldigger cline code (line 185)
-9. Be carefull along the code some objects dimensions will need updating
+9. To create the bolean vector identifying blank samples line 253, replace "blank_identifier" line 255 by the characters identifying your blanks in your sample names
+10. Be carefull along the code some objects dimensions will need updating
 
 The different steps are very well explained in these tutorials : 
 1. https://astrobiomike.github.io/amplicon/dada2_workflow_ex
