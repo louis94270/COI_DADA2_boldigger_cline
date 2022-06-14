@@ -12,7 +12,7 @@ A DADA2 metabarcoding eDNA pipeline for COI marker using boldigger cline all wor
 
 1. Download the R code on your local computer (or clone this directory)
 2. Put all your demultiplexed sequences in a folder
-3. Change file names to have the following pattern if not the case: Forward reads files end with "_R1_001.fastq", and Reverse reads files end with "_R2_001.fastq"
+3. Change file names to have the following pattern if not the case: Forward reads files end with "_R1_001.fastq", and Reverse reads files end with "_R2_001.fastq". Be careful not to include other "_" in your samples names.
 4. Change the different paths in the R code to match your computer set-up (line 12 and line 46)
 5. Change the primer for the one you are using in the R code (line 31 and line 33)
 6. You can start running the code ! 
