@@ -70,7 +70,7 @@ path_process <- path_cut # If you skipped primers removal, provide the path to y
 fas_Fs_process <- sort(list.files(path_process, pattern = file_pattern["F"], full.names = TRUE))
 fas_Rs_process <- sort(list.files(path_process, pattern = file_pattern["R"], full.names = TRUE))
 
-sample_names <- sapply(strsplit(basename(fas_Fs_process), "_"), function(x) {paste0(x[c(1:3,5)], collapse = "_")})
+sample_names <- sapply(strsplit(basename(fas_Fs_process), "_"), function(x) {paste0(x[c(1)], collapse = "_")})
 sample_names <- stringr::str_replace(sample_names, "Pool-0", "PCR")
 
 #### Inspect read quality profiles ####
