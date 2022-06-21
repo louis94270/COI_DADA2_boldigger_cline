@@ -230,8 +230,8 @@ write(asv_fasta, file.path(path_results, "ASVs.fa"))
 
 boldigger <- c("boldigger-cline")
 marker <- c("ie_coi")
-username <- c("louisastorg")
-password <- c("Coulibali1!")
+username <- c("username")
+password <- c("Password")
 fasta_path <- file.path(path_results, "ASVs.fa")
 output_folder <- path_results
 
