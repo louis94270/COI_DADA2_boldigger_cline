@@ -243,14 +243,18 @@ x <- paste(boldigger,
             output_folder, sep = " ")
 base::system(x)
 
+method = "jamp_hit"
+xlsx_path = file.path(path_results, "BOLDResults_ASVs_part_1.xlsx")
+y = paste(boldigger,
+          method,
+          xlsx_path,
+          sep = " ")
+base::system(y)
+
 ##Import csv result file
 tax <- readxl::read_xlsx(file.path(path_results,
-                                    "BOLDResults_ASVs_part_1.xlsx"))
-
-##Sub-sample best hit for each ASV
-tax <- as.data.frame(tax[seq(1, nrow(tax), 20), ]) #take every 20th row in df
-tax <- tax[, -8]
-tax[, 1] <- gsub(">", "", tax$`You searched for`)
+                                    "BOLDResults_ASVs_part_1.xlsx"),
+                                    sheet = 2)
 
 dim(tax)
 dim(seqtab_nochim)
